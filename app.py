@@ -25,3 +25,20 @@ def set_background():
     )
 # Call the function to set the background color 6739B7
 set_background()
+
+st.markdown("<h1 style='text-align: left; font-weight: bold; color: #A05EEA; font-size: 45px;'>PhonePe Pulse Visualization Dashboard</h1>", unsafe_allow_html=True)
+    
+# INDIA MAP ANALYSIS
+st.write("# :green[PHONEPE INDIA MAP]")
+c1,c2=st.columns(2)
+with c1:
+    Year = st.selectbox(
+            'Select the Year',
+            ('2018', '2019', '2020','2021','2022'))
+with c2:
+    Quarter = st.selectbox(
+            'Select the Quarter',
+            ('Q1 (Jan-Mar)', 'Q2 (Apr-Jun)', 'Q3 (Jul-Sep)','Q4 (Oct-Dec)'))
+year=int(Year)
+string_value = Quarter
+quarter= int(''.join(filter(str.isdigit, string_value)))
