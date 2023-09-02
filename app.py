@@ -29,7 +29,7 @@ set_background()
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #A05EEA; font-size: 45px;'>PhonePe Pulse Visualization Dashboard</h1>", unsafe_allow_html=True)
     
 # INDIA MAP ANALYSIS
-st.write("# :'#CEBDE1'[PHONEPE INDIA MAP]")
+st.write("# :BlueViolet[PHONEPE INDIA MAP]")
 c1,c2=st.columns(2)
 with c1:
     Year = st.selectbox(
