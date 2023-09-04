@@ -1,0 +1,6 @@
+dash~=2.11.1
+pandas~=2.0.3
+numpy
+plotly~=5.15.0
+streamlit
+pymysql
