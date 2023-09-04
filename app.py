@@ -58,7 +58,7 @@ def set_background():
 # Call the function to set the background color 6739B7
 set_background()
 
-st.markdown("<h1 style='text-align: left; font-weight: bold; color: #A05EEA; font-size: 45px;'>Phonepe Pulse Data Visualization and Exploration: A User-Friendly Tool Using Streamlit and Plotly</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: left; font-weight: bold; color: #A05EEA; font-size: 45px;'>Phonepe Pulse Data Visualization and Exploration</h1>", unsafe_allow_html=True)
     
 # INDIA MAP ANALYSIS
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>PhonePe Transaction Data On INDIA MAP</h1>", unsafe_allow_html=True)
