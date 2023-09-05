@@ -62,80 +62,79 @@ connection = pymysql.connect(
 )
 
 with st.spinner('Data loading in progress, please wait for it...'):
-    time.sleep(30)
-
 # Get data from DB put into DataFrames
-Data_Aggregated_Transaction_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_Transaction', connection)
-Data_Map_Transaction_df = pd.read_sql_query('SELECT * FROM Data_Map_Transaction', connection)
-Data_Aggregated_User_Summary_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_User_Summary', connection)
-Data_Aggregated_User_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_User', connection)
+    Data_Aggregated_Transaction_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_Transaction', connection)
+    Data_Map_Transaction_df = pd.read_sql_query('SELECT * FROM Data_Map_Transaction', connection)
+    Data_Aggregated_User_Summary_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_User_Summary', connection)
+    Data_Aggregated_User_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_User', connection)
 
-Scatter_Geo_Dataset = pd.read_sql_query('SELECT * FROM Data_Map_Districts_Longitude_Latitude', connection)
-Coropleth_Dataset = pd.read_sql_query('SELECT * FROM Data_Map_IndiaStates', connection)
-Data_Map_User = pd.read_sql_query('SELECT * FROM Data_Map_User', connection)
-Indian_States = pd.read_sql_query('SELECT * FROM Longitude_Latitude_State', connection)
+    Scatter_Geo_Dataset = pd.read_sql_query('SELECT * FROM Data_Map_Districts_Longitude_Latitude', connection)
+    Coropleth_Dataset = pd.read_sql_query('SELECT * FROM Data_Map_IndiaStates', connection)
+    Data_Map_User = pd.read_sql_query('SELECT * FROM Data_Map_User', connection)
+    Indian_States = pd.read_sql_query('SELECT * FROM Longitude_Latitude_State', connection)
 
-# print('MySQL - Data_Aggregated_Transaction',df)
-# Close the connection
-connection.close()
+    # print('MySQL - Data_Aggregated_Transaction',df)
+    # Close the connection
+    connection.close()
 
-# Data_Aggregated_Transaction_df= pd.read_csv(r'data/Data_Aggregated_Transaction_Table.csv')
-# Data_Aggregated_User_Summary_df= pd.read_csv(r'data/Data_Aggregated_User_Summary_Table.csv')
-# Data_Aggregated_User_df= pd.read_csv(r'data/Data_Aggregated_User_Table.csv')
-# Scatter_Geo_Dataset =  pd.read_csv(r'data/Data_Map_Districts_Longitude_Latitude.csv')
-# Coropleth_Dataset =  pd.read_csv(r'data/Data_Map_IndiaStates_TU.csv')
-# Data_Map_Transaction_df = pd.read_csv(r'data/Data_Map_Transaction_Table.csv')
-# Data_Map_User= pd.read_csv(r'data/Data_Map_User.csv')
-# Indian_States= pd.read_csv(r'data/Longitude_Latitude_State_Table.csv')
+    # Data_Aggregated_Transaction_df= pd.read_csv(r'data/Data_Aggregated_Transaction_Table.csv')
+    # Data_Aggregated_User_Summary_df= pd.read_csv(r'data/Data_Aggregated_User_Summary_Table.csv')
+    # Data_Aggregated_User_df= pd.read_csv(r'data/Data_Aggregated_User_Table.csv')
+    # Scatter_Geo_Dataset =  pd.read_csv(r'data/Data_Map_Districts_Longitude_Latitude.csv')
+    # Coropleth_Dataset =  pd.read_csv(r'data/Data_Map_IndiaStates_TU.csv')
+    # Data_Map_Transaction_df = pd.read_csv(r'data/Data_Map_Transaction_Table.csv')
+    # Data_Map_User= pd.read_csv(r'data/Data_Map_User.csv')
+    # Indian_States= pd.read_csv(r'data/Longitude_Latitude_State_Table.csv')
 
-Transaction_scatter_districts = Data_Map_Transaction_df.loc[(Data_Map_Transaction_df['Year'] == year ) & (Data_Map_Transaction_df['Quarter']==quarter) ].copy()
-Transaction_Coropleth_States = Transaction_scatter_districts[Transaction_scatter_districts["State"] == "india"]
-Transaction_scatter_districts.drop(Transaction_scatter_districts.index[(Transaction_scatter_districts["State"] == "india")],axis=0,inplace=True)
+    Transaction_scatter_districts = Data_Map_Transaction_df.loc[(Data_Map_Transaction_df['Year'] == year ) & (Data_Map_Transaction_df['Quarter']==quarter) ].copy()
+    Transaction_Coropleth_States = Transaction_scatter_districts[Transaction_scatter_districts["State"] == "india"]
+    Transaction_scatter_districts.drop(Transaction_scatter_districts.index[(Transaction_scatter_districts["State"] == "india")],axis=0,inplace=True)
 
-Transaction_scatter_districts = Transaction_scatter_districts.sort_values(by=['Place_Name'], ascending=False)
-Scatter_Geo_Dataset = Scatter_Geo_Dataset.sort_values(by=['District'], ascending=False)
+    Transaction_scatter_districts = Transaction_scatter_districts.sort_values(by=['Place_Name'], ascending=False)
+    Scatter_Geo_Dataset = Scatter_Geo_Dataset.sort_values(by=['District'], ascending=False)
 
-# Collect total amount
-Total_Amount=[]
-for i in Transaction_scatter_districts['Total_Amount']:
-    Total_Amount.append(i)
+    # Collect total amount
+    Total_Amount=[]
+    for i in Transaction_scatter_districts['Total_Amount']:
+        Total_Amount.append(i)
 
-Scatter_Geo_Dataset['Total_Amount']=Total_Amount
-
-
-# Collect total number of transaction
-Total_Transaction=[]
-for i in Transaction_scatter_districts['Total_Transactions_count']:
-    Total_Transaction.append(i)
-
-Scatter_Geo_Dataset['Total_Transactions'] = Total_Transaction
-Scatter_Geo_Dataset['Year_Quarter'] = str(year) + '-Q' + str(quarter)
-
-# Dynamic Coropleth
-Coropleth_Dataset = Coropleth_Dataset.sort_values(by=['state'], ascending=False)
-Transaction_Coropleth_States = Transaction_Coropleth_States.sort_values(by=['Place_Name'], ascending=False)
-
-Total_Amount=[]
-for i in Transaction_Coropleth_States['Total_Amount']:
-    Total_Amount.append(i)
-
-Coropleth_Dataset['Total_Amount']=Total_Amount
+    Scatter_Geo_Dataset['Total_Amount']=Total_Amount
 
 
-Total_Transaction=[]
-for i in Transaction_Coropleth_States['Total_Transactions_count']:
-    Total_Transaction.append(i)
+    # Collect total number of transaction
+    Total_Transaction=[]
+    for i in Transaction_scatter_districts['Total_Transactions_count']:
+        Total_Transaction.append(i)
 
-Coropleth_Dataset['Total_Transactions'] = Total_Transaction
+    Scatter_Geo_Dataset['Total_Transactions'] = Total_Transaction
+    Scatter_Geo_Dataset['Year_Quarter'] = str(year) + '-Q' + str(quarter)
 
-# Build INDIA MAP and plot data
+    # Dynamic Coropleth
+    Coropleth_Dataset = Coropleth_Dataset.sort_values(by=['state'], ascending=False)
+    Transaction_Coropleth_States = Transaction_Coropleth_States.sort_values(by=['Place_Name'], ascending=False)
 
-#scatter plotting the states codes 
-Indian_States = Indian_States.sort_values(by=['state'], ascending=False)
-Indian_States['Registered_Users'] = Coropleth_Dataset['Registered_Users']
-Indian_States['Total_Amount'] = Coropleth_Dataset['Total_Amount']
-Indian_States['Total_Transactions'] = Coropleth_Dataset['Total_Transactions']
-Indian_States['Year_Quarter'] = str(year)+'-Q'+str(quarter)
+    Total_Amount=[]
+    for i in Transaction_Coropleth_States['Total_Amount']:
+        Total_Amount.append(i)
+
+    Coropleth_Dataset['Total_Amount']=Total_Amount
+
+
+    Total_Transaction=[]
+    for i in Transaction_Coropleth_States['Total_Transactions_count']:
+        Total_Transaction.append(i)
+
+    Coropleth_Dataset['Total_Transactions'] = Total_Transaction
+
+    # Build INDIA MAP and plot data
+
+    #scatter plotting the states codes 
+    Indian_States = Indian_States.sort_values(by=['state'], ascending=False)
+    Indian_States['Registered_Users'] = Coropleth_Dataset['Registered_Users']
+    Indian_States['Total_Amount'] = Coropleth_Dataset['Total_Amount']
+    Indian_States['Total_Transactions'] = Coropleth_Dataset['Total_Transactions']
+    Indian_States['Year_Quarter'] = str(year)+'-Q'+str(quarter)
+    time.sleep(15)
 
 # sys.exit()
 
@@ -522,7 +521,7 @@ st.write()
 
 ################################################################# USER ANALYSIS ################################################################
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Userwise Data Analysis</h1>", unsafe_allow_html=True)
-tab1, tab2, tab3, tab4 = st.tabs(["Statewise Analysis", "Districtwise Analysis","Yearwise Analysis","Overall Analysis"])
+tab1, tab2, tab3, tab4 = st.tabs(["Statewise Analysis", "Year and Quaterwise Analysis","Statewise Mobile Brand Analysis","Overall Analysis"])
 
 # === U1 STATE ANALYSIS ===
 with tab1:
@@ -565,7 +564,6 @@ with tab1:
         <div style="color: white;">
         <h3><span style="color: white;"> Details of BarGraph:</span></h3>
         <ul>
-        <li>user need to select a state </li>
         <li>The X Axis shows both Registered users and App openings </li>
         <li>The Y Axis shows the Percentage of Registered users and App openings</li>
         </ul>
@@ -744,7 +742,7 @@ with tab3:
                 title_text="USERS DATA (2018 TO 2022)",
                 # Add annotations in the center of the donut pies.
                 annotations=[dict(text='Reg.Users', x=0.18, y=0.5, font_size=15, showarrow=False),
-                            dict(text='App-Opened', x=0.82, y=0.5, font_size=20, showarrow=False)])
+                            dict(text='App-Opened', x=0.82, y=0.5, font_size=15, showarrow=False)])
             st.plotly_chart(fig)
         with col2:  
             del years_Table['State'] 
