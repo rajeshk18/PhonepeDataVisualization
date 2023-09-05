@@ -1,3 +1,5 @@
+import sys
+import time
 import pandas as pd 
 import plotly.express as px
 import streamlit as st 
@@ -5,6 +7,7 @@ import warnings
 import pymysql
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from streamlit_card import card
 
 warnings.filterwarnings("ignore")
 
@@ -57,6 +60,9 @@ connection = pymysql.connect(
     password='kXngcs8zxk',
     db='sql12644155'
 )
+
+with st.spinner('Data loading in progress, please wait for it...'):
+    time.sleep(15)
 
 # Get data from DB put into DataFrames
 Data_Aggregated_Transaction_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_Transaction', connection)
@@ -130,6 +136,8 @@ Indian_States['Registered_Users'] = Coropleth_Dataset['Registered_Users']
 Indian_States['Total_Amount'] = Coropleth_Dataset['Total_Amount']
 Indian_States['Total_Transactions'] = Coropleth_Dataset['Total_Transactions']
 Indian_States['Year_Quarter'] = str(year)+'-Q'+str(quarter)
+
+# sys.exit()
 
 fig=px.scatter_geo(Indian_States,
                     lon=Indian_States['Longitude'],
@@ -209,6 +217,49 @@ with colT2:
     """,
     unsafe_allow_html=True
     )
+
+
+################################################################ Fun Facts ################################################################
+
+st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Fun Facts</h1>", unsafe_allow_html=True)
+tabfun1, tabfun2 = st.tabs(["Top Mobile Brand", "Top 3 Mobile Brand"])
+with tabfun1:
+    st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 25px;'>Top Mobile Brand in Indian as per PhonePe data</h1>", unsafe_allow_html=True)
+
+    brand=Data_Aggregated_User_df
+    b=brand.groupby('Brand_Name').sum()
+    myb= brand['Brand_Name'].unique()
+    x = sorted(myb).copy()
+    b=brand.groupby('Brand_Name').sum()
+    b['brand']=x
+    #st.write(b[b.columns[:0]])
+    # b['Rank'] = b['Registered_Users_Count'].rank(pct=True)   
+    topbrandsbyorder = b.sort_values(by='Registered_Users_Count', ascending=False)
+    topbrandsbyorder = topbrandsbyorder[:3]
+    # st.write(topbrandsbyorder)
+    # st.write(topbrandsbyorder[topbrandsbyorder.columns[:2]])
+    # st.write(topbrandsbyorder['brand'].iloc[0])
+    hasClicked = card(
+        title=topbrandsbyorder['brand'].iloc[0],
+        text="Stands on Top",
+        image="http://placekitten.com/200/300",
+        on_click=lambda: st.balloons(),
+        styles={
+                "card": {
+                    "width": "300px",
+                    "height": "300px",
+                    "border-radius": "30px",
+                    "box-shadow": "0 0 10px rgba(10,50,0,0.5)"
+                },
+                "text": {
+                    "font-family": "serif",
+                }
+            }
+        ) 
+
+with tabfun2:
+    st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 25px;'>Top 3 Mobile Brand in Indian as per PhonePe data</h1>", unsafe_allow_html=True)
+    st.write(topbrandsbyorder[topbrandsbyorder.columns[:2]])
 
 
 ################################################################ TRANSACTIONS ANALYSIS ################################################################
@@ -418,7 +469,7 @@ with tab4:
 # === Tab4 OVERALL ANALYSIS ===
 
 
-# TOP 5 STATES DATA
+################################################################# TOP 5 STATES DATA ################################################################
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Top 5 Statewise Analysis</h1>", unsafe_allow_html=True)
 
 c1,c2 = st.columns(2)
@@ -460,7 +511,7 @@ with col4:
     st.dataframe(y['Total_Amount'][1:6])
 
 
-# USER ANALYSIS
+################################################################# USER ANALYSIS ################################################################
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Userwise Data Analysis</h1>", unsafe_allow_html=True)
 tab1, tab2, tab3, tab4 = st.tabs(["Statewise Analysis", "Districtwise Analysis","Yearwise Analysis","Overall Analysis"])
 
@@ -700,3 +751,4 @@ with tab3:
             """,
             unsafe_allow_html=True
             )
+            
