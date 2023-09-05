@@ -62,7 +62,7 @@ connection = pymysql.connect(
 )
 
 with st.spinner('Data loading in progress, please wait for it...'):
-    time.sleep(15)
+    time.sleep(30)
 
 # Get data from DB put into DataFrames
 Data_Aggregated_Transaction_df = pd.read_sql_query('SELECT * FROM Data_Aggregated_Transaction', connection)
@@ -218,11 +218,13 @@ with colT2:
     unsafe_allow_html=True
     )
 
+st.divider()
+st.write()
 
 ################################################################ Fun Facts ################################################################
 
-st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Fun Facts</h1>", unsafe_allow_html=True)
-tabfun1, tabfun2 = st.tabs(["Top Mobile Brand", "Top 3 Mobile Brand"])
+st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Fun Facts by PhonePe</h1>", unsafe_allow_html=True)
+tabfun1, tabfun2, tabfun3, tabfun4, tabfun5 = st.tabs(["Top Mobile Brand", "Top 3 Mobile Brands", "Fun Fact 1", "Fun Fact 2", "Fun Fact 3"])
 with tabfun1:
     st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 25px;'>Top Mobile Brand in Indian as per PhonePe data</h1>", unsafe_allow_html=True)
 
@@ -260,12 +262,16 @@ with tabfun1:
 with tabfun2:
     st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 25px;'>Top 3 Mobile Brand in Indian as per PhonePe data</h1>", unsafe_allow_html=True)
     st.write(topbrandsbyorder[topbrandsbyorder.columns[:2]])
-
+with tabfun3:
+    st.markdown("#### :rainbow[Almost 70% of FASTag recharges in Q3 were accounted for by Tier 3 cities in the country. Looks like they hit the roads the fastest, once lockdown restrictions were lifted!]")
+with tabfun4:
+    st.markdown("#### :rainbow[A jump of 142% in transactions seen in Alappuzha district in Q3 2021, year on year. With one of the lowest altitudes in India, digital payments seem to be soaring way above the ground here.]")
+with tabfun5:
+    st.markdown("#### :rainbow[Long rides, made easy! Almost 70% of FASTag recharges]")
+st.divider()
+st.write()
 
 ################################################################ TRANSACTIONS ANALYSIS ################################################################
-st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>List of Indian States</h1>", unsafe_allow_html=True)
-# st.table(Indian_States.loc[:,"state"])
-
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>PhonePe Transaction Analysis</h1>", unsafe_allow_html=True)
 tab1, tab2, tab3, tab4 = st.tabs(["Overall Analysis", "Statewise Analysis", "Districtwise Analysis", "Yearwise Analysis"])
 # === Tab1 STATE ANALYSIS ===
@@ -467,7 +473,8 @@ with tab4:
         unsafe_allow_html=True
         )
 # === Tab4 OVERALL ANALYSIS ===
-
+st.divider()
+st.write()
 
 ################################################################# TOP 5 STATES DATA ################################################################
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Top 5 Statewise Analysis</h1>", unsafe_allow_html=True)
@@ -510,6 +517,8 @@ with col4:
     st.markdown("#### :rainbow[Total Amount]")
     st.dataframe(y['Total_Amount'][1:6])
 
+st.divider()
+st.write()
 
 ################################################################# USER ANALYSIS ################################################################
 st.markdown("<h1 style='text-align: left; font-weight: bold; color: #CEBDE1; font-size: 35px;'>Userwise Data Analysis</h1>", unsafe_allow_html=True)
@@ -751,4 +760,3 @@ with tab3:
             """,
             unsafe_allow_html=True
             )
-            
